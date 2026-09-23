@@ -57,7 +57,10 @@ impl<K: fmt::Debug> fmt::Display for RelationshipError<K> {
         match self {
             Self::UnknownNode(node) => write!(formatter, "unknown graph node: {node:?}"),
             Self::SelfRelationshipForbidden(node) => {
-                write!(formatter, "self relationship is forbidden for node: {node:?}")
+                write!(
+                    formatter,
+                    "self relationship is forbidden for node: {node:?}"
+                )
             }
         }
     }
