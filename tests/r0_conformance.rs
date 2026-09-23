@@ -123,28 +123,16 @@ fn relationship_removal_is_successful_and_idempotent() {
     directed.insert_node(a.clone());
     directed.insert_node(b.clone());
     directed.insert_relationship(&a, &b).unwrap();
-    assert_eq!(
-        directed.remove_relationship(&a, &b),
-        Ok(Change::Changed)
-    );
-    assert_eq!(
-        directed.remove_relationship(&a, &b),
-        Ok(Change::Unchanged)
-    );
+    assert_eq!(directed.remove_relationship(&a, &b), Ok(Change::Changed));
+    assert_eq!(directed.remove_relationship(&a, &b), Ok(Change::Unchanged));
     assert!(!directed.contains_relationship(&a, &b));
 
     let mut symmetric = SymmetricGraph::new(SelfRelationshipPolicy::Forbid);
     symmetric.insert_node(a.clone());
     symmetric.insert_node(b.clone());
     symmetric.insert_relationship(&a, &b).unwrap();
-    assert_eq!(
-        symmetric.remove_relationship(&b, &a),
-        Ok(Change::Changed)
-    );
-    assert_eq!(
-        symmetric.remove_relationship(&a, &b),
-        Ok(Change::Unchanged)
-    );
+    assert_eq!(symmetric.remove_relationship(&b, &a), Ok(Change::Changed));
+    assert_eq!(symmetric.remove_relationship(&a, &b), Ok(Change::Unchanged));
     assert!(!symmetric.contains_relationship(&a, &b));
 }
 
