@@ -1,34 +1,43 @@
-# Rust Framework Template Agent Guide
+# RunenGraph agent guide
 
-Start with `README.md`, `ARCHITECTURE.md`, `TESTING.md`, and `BOOTSTRAP.md`.
+## Start here
+
+Read `README.md`, `ARCHITECTURE.md`, `TESTING.md`, and `BOOTSTRAP.md` before
+changing the repository. The cross-repository boundary is established by
+[Engineering ADR 0010](https://github.com/dornglut/engineering/blob/main/adrs/0010-establish-runen-graph-boundary.md).
 
 ## Scope
 
-This repository owns a generic, one-time bootstrap baseline for Dornglut Rust
-framework repositories. It does not own product behavior, product architecture,
-product dependencies, releases, or ongoing synchronization.
+`dornglut/runen-graph` is a standalone Rust framework authority for reusable
+graph and relationship semantics over caller-owned identities. This revision is
+the repository bootstrap baseline. It does not define or implement graph
+semantics.
 
 ## Rules
 
-- Keep the template generic and one-shot.
-- Do not add product-specific implementation or dependencies.
-- Do not copy sibling repository roadmaps, status, issues, or live Project state.
-- Do not create compatibility forwarders, aliases, mirrors, or synchronization
-  machinery.
-- Preserve one semantic authority for each concern.
-- Keep the canonical validation command as `cargo validate`.
+- Keep the repository greenfield and bootstrap-bounded until a separate
+  RunenGraph semantic-kernel issue is accepted.
+- Do not transfer, copy, or migrate graph source from Runenwerk.
+- Do not add graph types, algorithms, storage, backends, examples, semantic
+  specifications, consumer integrations, or third-party graph dependencies.
+- Keep one product package plus the local `xtask`; do not introduce speculative
+  crate splits.
+- RunenGraph may be depended on by explicit consumers, but it must not depend
+  upward on RunenECS, RunenUI, Runenwerk, RunenRender, or future RunenKnowledge.
+- Preserve the `unsafe_code = "forbid"` baseline and stable minimal toolchain.
+- Contribution classification is `owner-only` until an accepted inbound
+  mechanism preserves commercial relicensing rights.
+- Keep `cargo validate` as the canonical repository-owned command.
 - Keep CI a thin read-only caller of repository-owned validation.
-- Resolve generated repository identity, license, MSRV, settings, conformance,
-  provenance, and deviations during bootstrap rather than freezing them here.
 
 ## Required workflow
 
-1. Read the current repository authority and accepted Engineering standards.
-2. Keep changes bounded to the template's generic bootstrap purpose.
-3. Run `cargo validate` from a suitable checked-out Rust executor when one is
-   available; do not simulate local validation when the selected procedure lacks
-   local execution.
-4. Validate the exact feature head through repository-owned CI before acceptance.
-5. Merge only the exact reviewed head after reconciling current `main`.
+1. Read the current repository authority and the accepted Engineering boundary.
+2. Keep changes bounded to the accepted RunenGraph-owned issue.
+3. Run `cargo validate` from a clean checked-out Rust executor when available.
+4. Validate the exact reviewed feature head through repository-owned CI.
+5. Reconcile the complete final diff with current `main` and merge only the
+   exact reviewed head.
 
-The template is not an ongoing authority for repositories generated from it.
+The bootstrap record is historical provenance. It is not an ongoing template
+guidance document or a synchronization mechanism.

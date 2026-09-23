@@ -1,103 +1,69 @@
-# Bootstrap procedure
+# RunenGraph bootstrap provenance
 
-This template is a one-time starting point. A generated repository must establish
-its own current authority before accepting substantive implementation.
+This document records how the standalone RunenGraph repository was established.
+It is historical provenance for the one-time bootstrap and is not active
+template guidance or a synchronization mechanism.
 
-## 1. Identity
+## Source and generated revision
 
-Replace the placeholder repository, package, crate, version, description, and
-repository metadata with the generated repository's accepted identity.
+The repository was generated from the accepted `dornglut/rust-framework-template`
+`main` revision `500461d51fe155febc806e288e5bc013e413a785`.
 
-Do not leave `rust-framework-template` as an active product identity.
+The generated RunenGraph repository began at initial revision
+`f395f2bc2839b56a18c1a4bff4f6b77625b7209c`. Its initial tree matched the
+template tree and therefore represented bootstrap provenance only; it did not
+represent RunenGraph semantic implementation.
 
-## 2. Classification
+## Product identity decisions
 
-Resolve and record:
+- Repository: `dornglut/runen-graph`
+- Package: `runen-graph`
+- Crate: `runen_graph`
+- Version: `0.0.0`
+- Edition: Rust 2024
+- Published package: no
+- Profile: `rust-framework`
+- Lifecycle: `active`
+- Contribution: `owner-only`
+- Canonical validation: `cargo validate`
 
-- repository profile;
-- lifecycle;
-- contribution mode;
-- owning domain;
-- relationship to existing repositories.
+RunenGraph is a standalone greenfield framework authority for reusable graph
+and relationship semantics over caller-owned identities. No graph semantics,
+consumer relationship, or source transfer was accepted as part of bootstrap.
 
-Use the accepted organization vocabulary rather than inventing local property
-values.
+## License transition
 
-## 3. Licensing
+The generated initial revision carried the Rust framework template's Apache-2.0
+license and associated template grant. The current RunenGraph product
+representation is prospectively GPL-3.0-only, with the separate commercial path
+described in `LICENSING.md`.
 
-Select the product license class before substantive implementation.
+The product transition does not revoke, narrow, or reinterpret rights granted on
+the template-origin revision. The historical Apache-2.0 grant remains historical
+provenance for that revision. Third-party material, if later incorporated,
+retains its own licensing obligations.
 
-Establish the required current `LICENSE`, package SPDX metadata, README license
-statement, and any required additional licensing documentation.
+## Toolchain posture
 
-The template's Apache-2.0 license is the template's own current license; it is
-not a generic product-license choice.
+RunenGraph uses the stable Rust toolchain with the existing minimal profile and
+`rustfmt`/`clippy` components. No MSRV is claimed because current product
+evidence does not establish one. The `unsafe_code = "forbid"` baseline is
+preserved.
 
-License changes are prospective. Historical grants remain historical evidence,
-and third-party material keeps its own license.
+## Intentional deviations from the template
 
-## 4. Toolchain
+- Active repository, package, crate, workflow, and documentation identity was
+  replaced with RunenGraph identity.
+- Product licensing was changed from the template's Apache-2.0 baseline to the
+  GPL-3.0-only product-library class.
+- `LICENSING.md` was added for the separate commercial licensing path and
+  historical template grant.
+- The template's `rust-version` claim was removed rather than adopted as an
+  MSRV.
+- Validation guards now reject stale active template identity and enforce the
+  RunenGraph licensing representation.
+- The repository profile, lifecycle, contribution classification, and GitHub
+  bootstrap settings were reconciled to the current rust-framework target.
 
-Resolve the generated repository's MSRV and toolchain from product evidence.
-
-Do not assume the template's current toolchain is the generated product's final
-MSRV. Update the package metadata and toolchain declaration together.
-
-## 5. Repository settings
-
-Establish the repository's accepted GitHub posture:
-
-- public or explicitly accepted visibility;
-- default branch `main`;
-- squash merge enabled;
-- merge commits disabled;
-- rebase merge disabled unless specifically justified;
-- merged head branches deleted;
-- normal changes through pull requests;
-- canonical validation required;
-- conversations resolved before merge;
-- force pushes and default-branch deletion blocked;
-- linear history preferred;
-- no meaningless solo-maintainer approval count;
-- applicable security controls enabled or recorded as platform deviations.
-
-## 6. Validation
-
-Keep `cargo validate` as the canonical command.
-
-Extend the local `xtask` only when the product has a demonstrated validation
-requirement. Product-specific checks remain repository-local and are not moved
-into shared CI.
-
-## 7. Downstream conformance
-
-When the framework exposes a public contract consumed by another repository,
-create an independent downstream conformance package or workload. Do not use
-the template itself as conformance evidence.
-
-## 8. Extraction and provenance
-
-If implementation is transferred from another repository, record:
-
-- source repository and accepted source revision;
-- source path or boundary;
-- ownership and licensing disposition;
-- transfer rationale and scope;
-- consumer migration boundary;
-- deviations introduced during extraction.
-
-The template does not grant authority to transfer source. Extraction remains
-owned by the accepted source and destination work.
-
-## 9. Deviations
-
-Record every intentional deviation from this template baseline in the generated
-repository's appropriate authority.
-
-Do not preserve obsolete template material merely for tree similarity.
-
-## Completion
-
-After these decisions are accepted, the template ceases to be relevant. The
-generated repository becomes the sole authority for its code, architecture,
-validation semantics, roadmap, releases, and compatibility.
+No graph types, examples, semantic specification, backend, third-party graph
+dependency, roadmap, status document, or consumer integration was created.
