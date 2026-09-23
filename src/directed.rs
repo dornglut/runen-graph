@@ -1,8 +1,6 @@
 use std::collections::BTreeSet;
 
-use crate::common::{
-    Change, NodeRemoval, NodeSet, RelationshipError, SelfRelationshipPolicy,
-};
+use crate::common::{Change, NodeRemoval, NodeSet, RelationshipError, SelfRelationshipPolicy};
 
 /// A directed structural relationship set over caller-owned node keys.
 ///
@@ -73,10 +71,7 @@ impl<K: Ord + Clone> DirectedGraph<K> {
     ) -> Result<Change, RelationshipError<K>> {
         self.nodes
             .validate_relationship(source, target, self.self_relationship_policy)?;
-        if self
-            .relationships
-            .insert((source.clone(), target.clone()))
-        {
+        if self.relationships.insert((source.clone(), target.clone())) {
             Ok(Change::Changed)
         } else {
             Ok(Change::Unchanged)
@@ -91,10 +86,7 @@ impl<K: Ord + Clone> DirectedGraph<K> {
     ) -> Result<Change, RelationshipError<K>> {
         self.nodes
             .validate_relationship(source, target, self.self_relationship_policy)?;
-        if self
-            .relationships
-            .remove(&(source.clone(), target.clone()))
-        {
+        if self.relationships.remove(&(source.clone(), target.clone())) {
             Ok(Change::Changed)
         } else {
             Ok(Change::Unchanged)
@@ -123,20 +115,13 @@ impl<K: Ord + Clone> DirectedGraph<K> {
     ///
     /// None means the supplied node is not admitted. An admitted node with no
     /// outgoing relationships returns an empty iterator.
-    pub fn outgoing<'a>(
-        &'a self,
-        node: &'a K,
-    ) -> Option<impl Iterator<Item = &'a K> + 'a> {
+    pub fn outgoing<'a>(&'a self, node: &'a K) -> Option<impl Iterator<Item = &'a K> + 'a> {
         self.nodes.contains(node).then(|| {
-            self.relationships
-                .iter()
-                .filter_map(move |(source, target)| {
-                    if source == node {
-                        Some(target)
-                    } else {
-                        None
-                    }
-                })
+            self.relationships.iter().filter_map(
+                move |(source, target)| {
+                    if source == node { Some(target) } else { None }
+                },
+            )
         })
     }
 
@@ -144,20 +129,13 @@ impl<K: Ord + Clone> DirectedGraph<K> {
     ///
     /// None means the supplied node is not admitted. An admitted node with no
     /// incoming relationships returns an empty iterator.
-    pub fn incoming<'a>(
-        &'a self,
-        node: &'a K,
-    ) -> Option<impl Iterator<Item = &'a K> + 'a> {
+    pub fn incoming<'a>(&'a self, node: &'a K) -> Option<impl Iterator<Item = &'a K> + 'a> {
         self.nodes.contains(node).then(|| {
-            self.relationships
-                .iter()
-                .filter_map(move |(source, target)| {
-                    if target == node {
-                        Some(source)
-                    } else {
-                        None
-                    }
-                })
+            self.relationships.iter().filter_map(
+                move |(source, target)| {
+                    if target == node { Some(source) } else { None }
+                },
+            )
         })
     }
 }
