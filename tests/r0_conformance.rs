@@ -16,6 +16,7 @@ fn directed_graph_preserves_caller_identity_and_direction() {
     let mut graph = DirectedGraph::new(SelfRelationshipPolicy::Forbid);
     assert_eq!(graph.insert_node(b.clone()), Change::Changed);
     assert_eq!(graph.insert_node(a.clone()), Change::Changed);
+    assert_eq!(graph.insert_node(a.clone()), Change::Unchanged);
     assert_eq!(
         graph.nodes().cloned().collect::<Vec<_>>(),
         keys(&["a", "b"])
@@ -111,6 +112,40 @@ fn rejected_removal_uses_the_same_validation_contract() {
         Err(RelationshipError::SelfRelationshipForbidden(a.clone()))
     );
     assert!(graph.contains_relationship(&a, &b));
+}
+
+#[test]
+fn relationship_removal_is_successful_and_idempotent() {
+    let a = Key("a");
+    let b = Key("b");
+
+    let mut directed = DirectedGraph::new(SelfRelationshipPolicy::Forbid);
+    directed.insert_node(a.clone());
+    directed.insert_node(b.clone());
+    directed.insert_relationship(&a, &b).unwrap();
+    assert_eq!(
+        directed.remove_relationship(&a, &b),
+        Ok(Change::Changed)
+    );
+    assert_eq!(
+        directed.remove_relationship(&a, &b),
+        Ok(Change::Unchanged)
+    );
+    assert!(!directed.contains_relationship(&a, &b));
+
+    let mut symmetric = SymmetricGraph::new(SelfRelationshipPolicy::Forbid);
+    symmetric.insert_node(a.clone());
+    symmetric.insert_node(b.clone());
+    symmetric.insert_relationship(&a, &b).unwrap();
+    assert_eq!(
+        symmetric.remove_relationship(&b, &a),
+        Ok(Change::Changed)
+    );
+    assert_eq!(
+        symmetric.remove_relationship(&a, &b),
+        Ok(Change::Unchanged)
+    );
+    assert!(!symmetric.contains_relationship(&a, &b));
 }
 
 #[test]
