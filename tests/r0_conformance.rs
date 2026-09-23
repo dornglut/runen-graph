@@ -1,6 +1,5 @@
 use runen_graph::{
-    Change, DirectedGraph, NodeRemoval, RelationshipError, SelfRelationshipPolicy,
-    SymmetricGraph,
+    Change, DirectedGraph, NodeRemoval, RelationshipError, SelfRelationshipPolicy, SymmetricGraph,
 };
 
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
@@ -25,10 +24,7 @@ fn directed_graph_preserves_caller_identity_and_direction() {
     assert_eq!(graph.insert_relationship(&a, &b), Ok(Change::Changed));
     assert!(graph.contains_relationship(&a, &b));
     assert!(!graph.contains_relationship(&b, &a));
-    assert_eq!(
-        graph.insert_relationship(&a, &b),
-        Ok(Change::Unchanged)
-    );
+    assert_eq!(graph.insert_relationship(&a, &b), Ok(Change::Unchanged));
 }
 
 #[test]
@@ -42,10 +38,7 @@ fn symmetric_graph_is_orientation_independent_and_canonical() {
     assert_eq!(graph.insert_relationship(&b, &a), Ok(Change::Changed));
     assert!(graph.contains_relationship(&a, &b));
     assert!(graph.contains_relationship(&b, &a));
-    assert_eq!(
-        graph.insert_relationship(&a, &b),
-        Ok(Change::Unchanged)
-    );
+    assert_eq!(graph.insert_relationship(&a, &b), Ok(Change::Unchanged));
     assert_eq!(
         graph
             .relationships()
@@ -68,10 +61,7 @@ fn self_relationship_policy_is_explicit() {
 
     let mut allowed = SymmetricGraph::new(SelfRelationshipPolicy::Allow);
     allowed.insert_node(a.clone());
-    assert_eq!(
-        allowed.insert_relationship(&a, &a),
-        Ok(Change::Changed)
-    );
+    assert_eq!(allowed.insert_relationship(&a, &a), Ok(Change::Changed));
     assert_eq!(allowed.relationship_count(), 1);
     assert_eq!(
         allowed.neighbors(&a).unwrap().cloned().collect::<Vec<_>>(),
