@@ -1,8 +1,6 @@
 use std::collections::BTreeSet;
 
-use crate::common::{
-    Change, NodeRemoval, NodeSet, RelationshipError, SelfRelationshipPolicy,
-};
+use crate::common::{Change, NodeRemoval, NodeSet, RelationshipError, SelfRelationshipPolicy};
 
 /// A symmetric structural relationship set over caller-owned node keys.
 ///
@@ -107,31 +105,24 @@ impl<K: Ord + Clone> SymmetricGraph<K> {
 
     /// Iterates canonical endpoint pairs in lexicographic key order.
     pub fn relationships(&self) -> impl Iterator<Item = (&K, &K)> {
-        self.relationships
-            .iter()
-            .map(|(left, right)| (left, right))
+        self.relationships.iter().map(|(left, right)| (left, right))
     }
 
     /// Returns directly related neighbors in ascending key order.
     ///
     /// None means the supplied node is not admitted. An admitted node with no
     /// neighbors returns an empty iterator.
-    pub fn neighbors<'a>(
-        &'a self,
-        node: &'a K,
-    ) -> Option<impl Iterator<Item = &'a K> + 'a> {
+    pub fn neighbors<'a>(&'a self, node: &'a K) -> Option<impl Iterator<Item = &'a K> + 'a> {
         self.nodes.contains(node).then(|| {
-            self.relationships
-                .iter()
-                .filter_map(move |(left, right)| {
-                    if left == node {
-                        Some(right)
-                    } else if right == node {
-                        Some(left)
-                    } else {
-                        None
-                    }
-                })
+            self.relationships.iter().filter_map(move |(left, right)| {
+                if left == node {
+                    Some(right)
+                } else if right == node {
+                    Some(left)
+                } else {
+                    None
+                }
+            })
         })
     }
 }
