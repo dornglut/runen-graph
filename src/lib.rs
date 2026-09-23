@@ -1,5 +1,13 @@
-//! RunenGraph repository bootstrap.
+//! RunenGraph foundational relationship semantic kernel.
 //!
-//! The graph and relationship semantic model is intentionally not defined yet.
-//! This crate currently provides the truthful package boundary for the future
-//! standalone framework authority.
+//! RunenGraph stores structural relationships over identities supplied by the
+//! caller. The repository spec directory is the normative authority for the
+//! semantics realized by this crate.
+
+mod common;
+mod directed;
+mod symmetric;
+
+pub use common::{Change, NodeRemoval, RelationshipError, SelfRelationshipPolicy};
+pub use directed::DirectedGraph;
+pub use symmetric::SymmetricGraph;

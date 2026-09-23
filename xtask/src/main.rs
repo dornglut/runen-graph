@@ -18,7 +18,13 @@ const REQUIRED_FILES: &[&str] = &[
     "README.md",
     "TESTING.md",
     "rust-toolchain.toml",
+    "spec/README.md",
+    "spec/semantic-model.md",
+    "src/common.rs",
+    "src/directed.rs",
     "src/lib.rs",
+    "src/symmetric.rs",
+    "tests/r0_conformance.rs",
     "xtask/Cargo.toml",
     "xtask/src/main.rs",
 ];
@@ -43,6 +49,8 @@ fn validate() -> Result<(), String> {
 
     validate_required_files(&root)?;
     validate_product_identity(&root)?;
+    validate_normative_spec(&root)?;
+
     let initial_state = git_status(&root)?;
     if !initial_state.is_empty() {
         return Err(format!(
@@ -132,6 +140,41 @@ fn validate_product_identity(root: &Path) -> Result<(), String> {
         ".github/workflows/validation.yml",
         "name: Validate RunenGraph",
     )?;
+
+    Ok(())
+}
+
+fn validate_normative_spec(root: &Path) -> Result<(), String> {
+    let index = read_text(root, "spec/README.md")?;
+    require_text(
+        &index,
+        "spec/README.md",
+        "sole normative authority for RunenGraph",
+    )?;
+    require_text(&index, "spec/README.md", "MUST")?;
+    require_text(&index, "spec/README.md", "Open")?;
+    require_text(&index, "spec/README.md", "Deferred")?;
+
+    let model = read_text(root, "spec/semantic-model.md")?;
+    for requirement in [
+        "RG-ID-001",
+        "RG-MEM-001",
+        "RG-REL-001",
+        "RG-DIR-001",
+        "RG-SYM-001",
+        "RG-SELF-001",
+        "RG-MUT-003",
+        "RG-OBS-001",
+    ] {
+        require_text(&model, "spec/semantic-model.md", requirement)?;
+    }
+
+    for relative_path in ["spec/README.md", "spec/semantic-model.md"] {
+        let text = read_text(root, relative_path)?;
+        reject_text(&text, relative_path, "http://")?;
+        reject_text(&text, relative_path, "https://")?;
+        reject_text(&text, relative_path, "../")?;
+    }
 
     Ok(())
 }

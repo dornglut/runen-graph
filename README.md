@@ -1,20 +1,39 @@
 # RunenGraph
 
-`dornglut/runen-graph` is a standalone reusable graph and relationship
-framework over caller-owned identities.
+dornglut/runen-graph is a standalone reusable graph and relationship framework
+over caller-owned identities.
 
 ## Maturity
 
-This repository is at bootstrap maturity. The repository authority, validation
-baseline, licensing representation, and ownership boundary are established, but
-the graph semantic model and public API have not yet been designed or
-implemented.
+RunenGraph has an accepted R0 foundational semantic kernel for explicit graph
+membership plus directed and symmetric structural relationship sets. The
+normative contract is under [spec/](spec/README.md).
 
-RunenGraph is greenfield. It is not an extraction of Runenwerk graph source,
+R0 deliberately excludes hierarchy, cardinality schemas, payloads, graph
+algorithms, persistence, multi-operation transactions, and consumer integration.
+Those capabilities require separately accepted work.
+
+RunenGraph remains greenfield. It is not an extraction of Runenwerk graph source,
 and existing graph-shaped systems are not automatically RunenGraph consumers.
+
+## R0 public surface
+
+The public crate currently provides:
+
+- DirectedGraph over caller-owned ordered keys;
+- SymmetricGraph over caller-owned ordered keys;
+- explicit node admission and atomic node removal;
+- explicit allow/forbid self-relationship policy;
+- set-valued relationship insertion/removal;
+- typed relationship-mutation rejection;
+- deterministic node, relationship, and direct-adjacency observation.
+
+The public identity remains the caller key. RunenGraph does not issue a public
+node or edge identifier in R0.
 
 ## Repository authority
 
+- [Normative specification](spec/README.md)
 - [Architecture](ARCHITECTURE.md)
 - [Testing and validation](TESTING.md)
 - [Bootstrap provenance](BOOTSTRAP.md)
@@ -26,9 +45,7 @@ and existing graph-shaped systems are not automatically RunenGraph consumers.
 
 The canonical repository-owned merge-readiness command is:
 
-```text
-cargo validate
-```
+    cargo validate
 
 ## License
 
