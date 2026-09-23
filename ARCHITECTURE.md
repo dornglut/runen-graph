@@ -2,48 +2,42 @@
 
 ## Boundary
 
-`rust-framework-template` is bootstrap infrastructure. Its purpose is to
-provide a minimal, reusable starting shape for a new Dornglut Rust framework
-repository.
+RunenGraph is a standalone foundational Runen-family framework authority for
+reusable graph and relationship semantics over caller-owned identities. It is
+greenfield and does not receive source authority from Runenwerk's graph-shaped
+systems.
 
-It owns no runtime behavior, public product contract, domain model, renderer,
-GPU subsystem, ECS, service, application, or product data.
+This bootstrap revision establishes the repository boundary only. It does not
+define the graph model, identity representation, relationship rules, storage,
+algorithms, backend, or public semantic API.
 
-## Repository shape
+## Repository topology
 
-The baseline consists of:
+The repository has one non-published product package and one local validation
+package:
 
-- a tiny non-published root Rust library used to prove the package baseline;
-- a local `xtask` that owns canonical validation;
-- a thin immutable shared-workflow caller;
-- root agent, architecture, testing, and bootstrap documentation;
-- the repository's Apache-2.0 license.
+```text
+repository
+├── root package: runen-graph / runen_graph
+└── xtask: repository-owned validation authority
+```
 
-No empty taxonomy directories or product-specific modules are created.
+No speculative product crate split is established by the bootstrap.
 
 ## Dependency direction
 
-```text
-repository source
-    └── root package
+RunenGraph is an independent semantic authority. Explicit consumers may depend
+on RunenGraph, but RunenGraph must not depend upward on RunenECS, RunenUI,
+Runenwerk, RunenRender, or any future RunenKnowledge repository. Consumer
+adoption and any integration correspondence are separate consumer-owned work.
 
-validation authority
-    └── xtask
-          └── cargo / git commands
+The local validation package owns the meaning of `cargo validate`. Shared CI
+only invokes that command and does not define product or validation semantics.
 
-CI orchestration
-    └── dornglut/github-workflows
-          └── cargo +stable validate
-```
+## Documentation authority
 
-The reusable workflow orchestrates validation but does not define its meaning.
-The `xtask` is repository-local validation authority.
-
-## Generated repositories
-
-A generated repository replaces the placeholder package identity and source,
-selects its own license and toolchain contract, establishes its repository
-settings, and extends validation only for proven product-specific requirements.
-
-After bootstrap, the template is not an architectural dependency and must not
-remain a synchronization authority.
+The cross-repository boundary is owned by [Engineering ADR
+0010](https://github.com/dornglut/engineering/blob/main/adrs/0010-establish-runen-graph-boundary.md)
+and the [Runen-family architecture](https://github.com/dornglut/engineering/blob/main/architecture/runen-family.md).
+This document is the concise repository-local boundary map. `README.md`,
+`TESTING.md`, `BOOTSTRAP.md`, and `AGENTS.md` own their documented concerns.

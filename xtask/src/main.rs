@@ -14,6 +14,7 @@ const REQUIRED_FILES: &[&str] = &[
     "Cargo.lock",
     "Cargo.toml",
     "LICENSE",
+    "LICENSING.md",
     "README.md",
     "TESTING.md",
     "rust-toolchain.toml",
@@ -41,6 +42,7 @@ fn validate() -> Result<(), String> {
         .to_path_buf();
 
     validate_required_files(&root)?;
+    validate_product_identity(&root)?;
     let initial_state = git_status(&root)?;
     if !initial_state.is_empty() {
         return Err(format!(
@@ -82,6 +84,58 @@ fn validate() -> Result<(), String> {
     Ok(())
 }
 
+fn validate_product_identity(root: &Path) -> Result<(), String> {
+    let cargo_toml = read_text(root, "Cargo.toml")?;
+    require_text(&cargo_toml, "Cargo.toml", "name = \"runen-graph\"")?;
+    require_text(&cargo_toml, "Cargo.toml", "edition = \"2024\"")?;
+    require_text(&cargo_toml, "Cargo.toml", "license.workspace = true")?;
+    require_text(
+        &cargo_toml,
+        "Cargo.toml",
+        "repository = \"https://github.com/dornglut/runen-graph\"",
+    )?;
+    require_text(&cargo_toml, "Cargo.toml", "publish = false")?;
+    require_text(&cargo_toml, "Cargo.toml", "license = \"GPL-3.0-only\"")?;
+    reject_text(&cargo_toml, "Cargo.toml", "rust-version")?;
+
+    let license = read_text(root, "LICENSE")?;
+    require_text(&license, "LICENSE", "GNU GENERAL PUBLIC LICENSE")?;
+    require_text(&license, "LICENSE", "Version 3, 29 June 2007")?;
+    reject_text(&license, "LICENSE", "Apache License")?;
+
+    let licensing = read_text(root, "LICENSING.md")?;
+    require_text(&licensing, "LICENSING.md", "GPL-3.0-only")?;
+    require_text(&licensing, "LICENSING.md", "Apache-2.0")?;
+    require_text(&licensing, "LICENSING.md", "historical")?;
+
+    for relative_path in [
+        "README.md",
+        "AGENTS.md",
+        "ARCHITECTURE.md",
+        "TESTING.md",
+        ".github/workflows/validation.yml",
+        "src/lib.rs",
+    ] {
+        let text = read_text(root, relative_path)?;
+        reject_text(&text, relative_path, "rust-framework-template")?;
+        reject_text(&text, relative_path, "Rust Framework Template")?;
+    }
+
+    let workflow = read_text(root, ".github/workflows/validation.yml")?;
+    require_text(
+        &workflow,
+        ".github/workflows/validation.yml",
+        "name: RunenGraph Validation",
+    )?;
+    require_text(
+        &workflow,
+        ".github/workflows/validation.yml",
+        "name: Validate RunenGraph",
+    )?;
+
+    Ok(())
+}
+
 fn validate_required_files(root: &Path) -> Result<(), String> {
     for relative_path in REQUIRED_FILES {
         let path = root.join(relative_path);
@@ -91,6 +145,31 @@ fn validate_required_files(root: &Path) -> Result<(), String> {
     }
 
     Ok(())
+}
+
+fn read_text(root: &Path, relative_path: &str) -> Result<String, String> {
+    std::fs::read_to_string(root.join(relative_path))
+        .map_err(|error| format!("failed to read {relative_path}: {error}"))
+}
+
+fn require_text(text: &str, relative_path: &str, expected: &str) -> Result<(), String> {
+    if text.contains(expected) {
+        Ok(())
+    } else {
+        Err(format!(
+            "{relative_path} is missing required text: {expected}"
+        ))
+    }
+}
+
+fn reject_text(text: &str, relative_path: &str, forbidden: &str) -> Result<(), String> {
+    if text.contains(forbidden) {
+        Err(format!(
+            "{relative_path} contains forbidden text: {forbidden}"
+        ))
+    } else {
+        Ok(())
+    }
 }
 
 fn git_status(root: &Path) -> Result<String, String> {

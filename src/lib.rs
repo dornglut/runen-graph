@@ -1,4 +1,5 @@
-//! Placeholder library for the Rust framework bootstrap template.
+//! RunenGraph repository bootstrap.
 //!
-//! Generated repositories replace this package identity and source during
-//! bootstrap. The template itself owns no product semantics.
+//! The graph and relationship semantic model is intentionally not defined yet.
+//! This crate currently provides the truthful package boundary for the future
+//! standalone framework authority.

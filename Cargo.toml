@@ -1,12 +1,14 @@
 [package]
-name = "rust-framework-template"
+name = "runen-graph"
 version = "0.0.0"
 edition = "2024"
-rust-version = "1.93.0"
 license.workspace = true
-repository = "https://github.com/dornglut/rust-framework-template"
-description = "Reusable Rust framework bootstrap template"
+repository = "https://github.com/dornglut/runen-graph"
+description = "Standalone reusable graph and relationship framework over caller-owned identities"
 publish = false
+
+[lib]
+name = "runen_graph"
 
 [workspace]
 resolver = "3"
@@ -14,7 +16,7 @@ members = ["xtask"]
 
 [workspace.package]
 edition = "2024"
-license = "Apache-2.0"
+license = "GPL-3.0-only"
 
 [lints]
 workspace = true
